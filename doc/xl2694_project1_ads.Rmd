@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Here we get a database called HappyDB that "a corpus of 100,000 crowd-sourced happy moments". We know many things can make people smile. In this project we merged HappyDB and demographic.csv that contains demographic information of the workers who contributed to the happy moment collection to analyze the differences of happy moments by gender,country and age.I used word cloud, sentiment analysis and topic model to analysis the database and visualize the data.
 
 
-Step 0: Check and install needed packages. Load the libraries and functions
+### Step 0: Check and install needed packages. Load the libraries and functions
 
 ```{r}
 library(tm)
@@ -32,7 +32,7 @@ library(reshape2)
 library(plotly)
 ```
 
-Step 1: Data harvest
+### Step 1: Data harvest
 
 import the HappyDB from the website and then clean the text 
 
@@ -50,6 +50,7 @@ corpus <- VCorpus(VectorSource(hm_data$cleaned_hm))%>%
 
 
 Next we stem the words and convert them to a "tidy" object. We build a new dataframe called new_df that only contains the hmid,wid and text sentence and then count the number of comments made by each worker(the reason why we do this is we want to count the ratio of each word later).Then add column ratio to dataframe new_df
+
 ```{r stemming}
 stemmed <- tm_map(corpus, stemDocument) %>%
   tidy() %>%
@@ -63,6 +64,7 @@ new_df <- merge(new_df, comment_count, by = 'wid')
 ```
 
 Then splite each sentence into word and We remove stopwords provided by the "tidytext" package and add some custom stopword
+
 ```{r stopwords}
 dict <- tidy(corpus) %>%
   select(text) %>%
@@ -77,6 +79,7 @@ stop_words <- stop_words %>%
 ```
 
 Lastly, we complete the stems by picking the corresponding word with the highest frequency.
+
 ```{r tidy stems with dictionary}
 completed <- new_df %>%
   unnest_tokens(stems, text) %>%
@@ -97,14 +100,15 @@ completed <- completed %>%
 
 Because we want to do furture investigation then we import demographic.csv,including country,gender,age from the same database.
 For our further investigation, we combine file completed and demo.list together into one single file.
+
 ```{r}
 demo <- read_csv('https://raw.githubusercontent.com/rit-public/HappyDB/master/happydb/data/demographic.csv')
 merge_df <- merge(completed, demo, by = 'wid')
 ```
 
-step 2: sentiments analysis and data visualization
+### step 2: sentiments analysis and data visualization
 
-step2.1  select words using sentiment lexicons "bing"
+#### step2.1  select words using sentiment lexicons "bing"
 
 There are many sentiment lexicons available on the internet. So first Let's look at the words with a joy score from the bing lexicon. What are the most common positive and negative words inner join with our database? We can use wordcloud to plot it. From the result we can see "favorite","nice","won","beautiful","amazing","enjoyed","excited","awesome","bonus","free" are the top 10 positive words that mention mostly by the people. Combined with my personal experience I will also feel happily when I get my "favorite" gift, when I "enjoyed" a "exciting" films, when I get a "free meal"" and so on. 
 ```{r}
@@ -150,7 +154,7 @@ j_word %>%
 ```
 
 
-step2.2 analyze the frequency of the topten words mention by different age level
+#### step2.2 analyze the frequency of the topten words mention by different age level
 
 further more I am curious whether I could analyze the frequency of the topten words mention by different age group. Maybe the results will reflect the living habits of differnet age group.So I draw two graphs to show the results.The first one is the age for every year and the second one I classify the age [17,90] into 8 levels. From the first graph we can see straighforward results in every age. The second one is very easy to compare young,middle and old age.
 
@@ -241,7 +245,7 @@ ggplotly(g5)
 From the result we see that "bonus" and "favorite" are more mentioned by people over 50 years old. And "won" are more mentioned by young people(except level [80,90]).It is make sense because young people like competitons and competitons actually exist in their life such as work and study. So when they won something they will feel so happy. For old people they usually buy clothing and others just follow their heart(buy their favority thing).They won't concern more about whether I can wear this to school or whether it is too expensive and so on.But old people consider more about "bonus". They work in a company for a long time, so they will put more attention on their bonus especially for people who will retire.
 
 
-step2.3  analyze the frequency of the topten words mention by gender
+#### step2.3  analyze the frequency of the topten words mention by gender
 
 Further more I am wondering whether I could analyze the frequency of the topten words mention by female and male. The results will reflect the living habits by gender. So I plot two graphs, the first one is positive words and second one is negative words.
 ```{r}
@@ -282,7 +286,7 @@ From the graphs we can totally analysis the characters difference between female
 
 
 
-step2.4  analyze the frequency of the topten words between parenthood
+#### step2.4  analyze the frequency of the topten words between parenthood
 
 "most children report painful feelings about their parents' divorce, and a significant minority of children suffer extended and prolonged symptomatology related to parental divorce that may include both internalizing and externalizing problems" mentioned by Catherine M Lee in the paper "Children's reactions to parental separation and divorce". So this causes my curiosity, I want to use data to explore the emotion change. Are people whose parents are divorced more negative than people whose parents relationships are healthy?
 
@@ -318,13 +322,13 @@ ggplotly(g12)
 
 People whose parenthood status are healthy mention more positive words than those whose parenthood status are broken. Because the number of people in level "n" and level "y" are different, So we use ratio= # of this words mention by people in this level/# of peopel in this level. This shows children whose parents are divorced have a emotion change.
 
-Summary: We find many characters for differnt group people. Those findings give us many business value. For example, When we send email of our company's products, we can send more fancy styles to male and send more normal styles to women.We also could give some free gifts to women when they shopping at store.This will make them more happile and maybe will ignite their shopping desire.For older man we can give them more points that can redeem some thing when they shopping at our store. This is similar to "bonus". 
+#### Summary: We find many characters for differnt group people. Those findings give us many business value. For example, When we send email of our company's products, we can send more fancy styles to male and send more normal styles to women.We also could give some free gifts to women when they shopping at store.This will make them more happile and maybe will ignite their shopping desire.For older man we can give them more points that can redeem some thing when they shopping at our store. This is similar to "bonus". 
 
 
 
 
 
-step 3: Topic model
+### step 3: Topic model
 In this step, I want to apply some topic models. So first I delete all emotion words from the dataset. I want to put more attention on the events that make people happily.I also put age[17,90] into 8 levels. It is more convenience to compare with each other in this way. I want to explore what events make people happily in each age level.
 
 ```{r, echo=FALSE, fig.height=10, fig.width=20}
@@ -371,7 +375,7 @@ For middle age[30,50] the topic words are "aparment","attributing","traveling"..
 For old people[50,70] the topic words are "birthday","home","husband"......
 For age[70,90], the topic words are "friends","badge"......
 
-Summary: When people are young,they won't consider more about reality. At this age, young people will consider more about how to enjoy life, so they will feel happily maybe when we adopt a animal;maybe when we get someone's attention. But When they  are at middle age, they will have a family, So,They will put more attention on reality. We will feel happy when we buy a new aparment or travel to someplace. When people retire they will foces more on themselves, such as their home and their health.
+#### Summary: When people are young,they won't consider more about reality. At this age, young people will consider more about how to enjoy life, so they will feel happily maybe when we adopt a animal;maybe when we get someone's attention. But When they  are at middle age, they will have a family, So,They will put more attention on reality. We will feel happy when we buy a new aparment or travel to someplace. When people retire they will foces more on themselves, such as their home and their health.
 
 
 

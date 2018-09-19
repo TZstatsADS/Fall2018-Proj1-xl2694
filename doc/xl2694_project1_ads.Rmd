@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Here we get a database called HappyDB that "a corpus of 100,000 crowd-sourced happy moments". We know many thing can make people smile. In this project we merged HappyDB and demographic.csv that contains demographic information of the workers who contributed to the happy moment collection to analyze the differences of happy moments by gender,country and age.I used word cloud, sentiment analysis and topic model to analysis the database and visualization the data.
 
 
-Step 0: Check and install needed packages. Load the libraries and functions
+### Step 0: Check and install needed packages. Load the libraries and functions
 
 ```{r}
 library(tm)
@@ -104,7 +104,7 @@ merge_df <- merge(completed, demo, by = 'wid')
 
 ### step 2: sentiments analysis and data visualization
 
-## step2.1  select words using sentiment lexicons "bing"
+#### step2.1  select words using sentiment lexicons "bing"
 
 There are many sentiment lexicons available on the internet. So first Let's look at the words with a joy score from the bing lexicon. What are the most common positive and negative words inner join with our database? We can use wordcloud to plot it. From the result we can see "favorite","nice","won","beautiful","amazing","enjoyed","excited","awesome","bonus","free" are the top 10 positive words that mention mostly by by the people. Combined with my personal experience I will also feel happily like when I get my "favorite" gift, when I "enjoyed" a "exciting" films, when I get a "free meal"" and so on. 
 ```{r}
@@ -150,7 +150,7 @@ j_word %>%
 ```
 
 
-step2.2 analyze the frequency of the topten words mention by different age level
+#### step2.2 analyze the frequency of the topten words mention by different age level
 
 further more I am curious whether I could analyze the frequency of the topten words mention by different age group. Maybe the results will reflect the living habits of differnet age group.So I draw two graphs to show the results.The first one is the age for every year and the second one I classify the age [17,90] into 8 levels. From the first one we can see straighforward results in every age. The second one is very easy to compare young,middle and old age.
 
@@ -241,7 +241,7 @@ ggplotly(g5)
 From the result we see that "bonus" and "favorite" are more mentioned by people over 50 years old. And "won" are more mentioned by young people(except level [80,90]).It is make sense because young people like competiton and competiton actually exist in their life such as work and study. So when they won something they will feel so happy. For old people they usually buy clothing and others just follow their heart(buy their favority thing).They won't concern more about whether I can wear this to school or whether it is too expensive and so on.But old people consider more about "bonus". They work in a company for a long time, so they will put more attention on their bonus especially for people who will retire.
 
 
-step2.2  analyze the frequency of the topten words mention by gender
+#### step2.3  analyze the frequency of the topten words mention by gender
 
 Further more I am wondering whether I could analyze the frequency of the topten words mention by female and male. The results will reflect the living habits by gender. So I plot two graphs, the first one is positive words and second one is negative words.
 ```{r}
@@ -282,7 +282,7 @@ From the graphs we can totally analysis the characters difference between female
 
 
 
-step2.2  analyze the frequency of the topten words between parenthood
+#### step2.4  analyze the frequency of the topten words between parenthood
 
 "most children report painful feelings about their parents' divorce, and a significant minority of children suffer extended and prolonged symptomatology related to parental divorce that may include both internalizing and externalizing problems" mentioned by Catherine M Lee in the paper "Children's reactions to parental separation and divorce". So this causes my curiosity, I want to use data to explore the emotion change. Are people whose parents are divorced more negative than people whose parents relationships are healthy?
 
@@ -318,7 +318,7 @@ ggplotly(g12)
 
 People whose parenthood status are healthy mention more positive words than those whose parenthood status are broken. Because the number of people in level n and level y are differnt, So we use ratio= # of this words mention by people in this level/# of peopel in this level. This shows divorce have a influence to people.
 
-Summary: We find many characters for differnt group people. Those findings give us many business value. For example, When we send email about our company's products, we can send more fancy styles to male and send more normal styles to women. For female we also can give some free gifts when they shopping at store. For older man we can give them more points that can redeem some thing when they shopping at our store. This is similar to "bonus". 
+#### Summary: We find many characters for differnt group people. Those findings give us many business value. For example, When we send email about our company's products, we can send more fancy styles to male and send more normal styles to women. For female we also can give some free gifts when they shopping at store. For older man we can give them more points that can redeem some thing when they shopping at our store. This is similar to "bonus". 
 
 
 

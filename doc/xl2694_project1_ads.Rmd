@@ -1,6 +1,6 @@
 ---
 title: "xiaoyi"
-author: "XiqingLiu"
+author: "Xiaoyi li"
 date: "9/16/2018"
 output: html_document
 ---
@@ -102,9 +102,9 @@ demo <- read_csv('https://raw.githubusercontent.com/rit-public/HappyDB/master/ha
 merge_df <- merge(completed, demo, by = 'wid')
 ```
 
-step 2: sentiments analysis and data visualization
+### step 2: sentiments analysis and data visualization
 
-step2.1  select words using sentiment lexicons "bing"
+## step2.1  select words using sentiment lexicons "bing"
 
 There are many sentiment lexicons available on the internet. So first Let's look at the words with a joy score from the bing lexicon. What are the most common positive and negative words inner join with our database? We can use wordcloud to plot it. From the result we can see "favorite","nice","won","beautiful","amazing","enjoyed","excited","awesome","bonus","free" are the top 10 positive words that mention mostly by by the people. Combined with my personal experience I will also feel happily like when I get my "favorite" gift, when I "enjoyed" a "exciting" films, when I get a "free meal"" and so on. 
 ```{r}
@@ -324,7 +324,7 @@ Summary: We find many characters for differnt group people. Those findings give 
 
 
 
-step 3: Topic model
+### step 3: Topic model
 In this step, I want to apply some topic models. So first I delete all emotion words from the dataset. I want to put more attention on the events that make people happy.I also put age[17,90] into 8 levels. It is more convenience to compare with each other in this way. I want to explore what events make people happy in each age level.
 
 ```{r, echo=FALSE, fig.height=20, fig.width=20}

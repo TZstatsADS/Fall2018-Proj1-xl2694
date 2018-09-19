@@ -32,7 +32,7 @@ library(reshape2)
 library(plotly)
 ```
 
-Step 1: Data harvest
+### Step 1: Data harvest
 
 import the HappyDB from the website and then clean the text 
 
